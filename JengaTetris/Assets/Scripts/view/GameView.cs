@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using Assets.Scripts.controller.session;
 using Assets.Scripts.engine.piece;
 using Assets.Scripts.engine.services;
+using Assets.Scripts.view.board;
+using Assets.Scripts.view.common;
 using UnityEngine;
 
-public class GameView : MonoBehaviour, IGameServices, IControllerServices
+public class GameView : GameComponent, IGameServices, IControllerServices
 {
-    void Awake()
+    private BoardView board;
+
+    public override void Awake()
     {
+        //start components
+        board = LoadAndAdd<BoardView>(transform, "Stage/Board");
+
+        //start engine and controllers
         SessionController.ME.StartSession(this);
         UserGameController.ME.StartController(this);
     }
@@ -21,7 +29,7 @@ public class GameView : MonoBehaviour, IGameServices, IControllerServices
 
     public void NotifyNextPiece(Piece p)
     {
-        
+       
     }
 
     public void NotifyEndGame(bool isWin)
