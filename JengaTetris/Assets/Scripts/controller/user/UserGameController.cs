@@ -30,9 +30,11 @@ public class UserGameController : Singleton<UserGameController>
         if (Input.GetKeyDown(KeyCode.Escape)) services.NotifyPause();
         if (Input.GetKeyDown(KeyCode.LeftArrow)) services.NotifyMoveLeft();
         if (Input.GetKeyDown(KeyCode.RightArrow)) services.NotifyMoveRight();
-        if (Input.GetKeyDown(KeyCode.DownArrow)) services.NotifyMoveDown();
         if (Input.GetKeyDown(KeyCode.S)) services.NotifyRotateLeft();
         if (Input.GetKeyDown(KeyCode.D)) services.NotifyRotateRight();
-        
+
+
+        //press for down
+        if (Input.GetKey(KeyCode.DownArrow)) services.NotifyMoveDown();
     }
 }

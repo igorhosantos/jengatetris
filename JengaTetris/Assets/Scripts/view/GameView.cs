@@ -5,12 +5,12 @@ using Assets.Scripts.engine.piece;
 using Assets.Scripts.engine.services;
 using Assets.Scripts.view.board;
 using Assets.Scripts.view.common;
+using Assets.Scripts.view.piece;
 using UnityEngine;
 
 public class GameView : GameComponent, IGameServices, IControllerServices
 {
     private BoardView board;
-
     public override void Awake()
     {
         //start components
@@ -29,7 +29,7 @@ public class GameView : GameComponent, IGameServices, IControllerServices
 
     public void NotifyNextPiece(Piece p)
     {
-       
+        board.DropNewPiece(p);
     }
 
     public void NotifyEndGame(bool isWin)
@@ -41,27 +41,27 @@ public class GameView : GameComponent, IGameServices, IControllerServices
     #region [CONTROLLERS]
     public void NotifyMoveLeft()
     {
-        Debug.Log("NotifyMoveLeft");
+        board.MovePieceLeft();
     }
 
     public void NotifyMoveRight()
     {
-        Debug.Log("NotifyMoveRight");
+        board.MovePieceRight();
     }
 
     public void NotifyMoveDown()
     {
-        Debug.Log("NotifyMoveDown");
+        board.MovePieceDown();
     }
 
     public void NotifyRotateLeft()
     {
-        Debug.Log("NotifyRotateLeft");
+        board.RotatePieceLeft();
     }
 
     public void NotifyRotateRight()
     {
-        Debug.Log("NotifyRotateRight");
+        board.RotatePieceRight();
     }
 
     public void NotifyPause()

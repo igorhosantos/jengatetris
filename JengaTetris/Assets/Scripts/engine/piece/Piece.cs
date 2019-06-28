@@ -6,9 +6,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.engine.piece
 {
-    public class Piece
+    public class Piece:MonoBehaviour
     {
-        [SerializeField] private int id;
+        [SerializeField] public int id;
+        [SerializeField] private float dropChance;
         [SerializeField] private bool isPowerUp;
+
+
+        public override bool Equals(object other)
+        {
+            return id == (other as Piece).id;
+        }
     }
 }

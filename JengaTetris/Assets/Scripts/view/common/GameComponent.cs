@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 using Object = System.Object;
 
 namespace Assets.Scripts.view.common
@@ -22,6 +18,13 @@ namespace Assets.Scripts.view.common
         public virtual void Update()
         {
 
+        }
+
+        protected T InstantiateAndAdd<T>(Component parent, GameObject current) where T : Component
+        {
+            GameObject gb = Instantiate(current, parent.transform);
+            T tp = gb.AddComponent<T>();
+            return tp;
         }
 
         protected T LoadAndAdd<T>(string path) where T : Component

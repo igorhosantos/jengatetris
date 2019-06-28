@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.controller.piece;
 using Assets.Scripts.engine.session;
 
 namespace Assets.Scripts.controller.session
