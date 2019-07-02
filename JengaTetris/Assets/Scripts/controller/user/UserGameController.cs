@@ -7,7 +7,7 @@ public class UserGameController : Singleton<UserGameController>
 {
     private IControllerServices services;
     private bool controllerEnables;
-
+    public bool gamePaused { get; private set; }
     public void StartController(IControllerServices services)
     {
         this.services = services;
@@ -27,7 +27,11 @@ public class UserGameController : Singleton<UserGameController>
     {
         if (!controllerEnables) return;
 
-        if (Input.GetKeyDown(KeyCode.Escape)) services.NotifyPause();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gamePaused = !gamePaused;
+            services.NotifyPause(gamePaused);
+        }
         if (Input.GetKeyDown(KeyCode.LeftArrow)) services.NotifyMoveLeft();
         if (Input.GetKeyDown(KeyCode.RightArrow)) services.NotifyMoveRight();
         if (Input.GetKeyDown(KeyCode.S)) services.NotifyRotateLeft();

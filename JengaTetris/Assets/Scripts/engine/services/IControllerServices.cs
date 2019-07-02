@@ -13,6 +13,6 @@ namespace Assets.Scripts.engine.services
         void NotifyMoveDown();
         void NotifyRotateLeft();
         void NotifyRotateRight();
-        void NotifyPause();
+        void NotifyPause(bool gamePaused);
     }
 }

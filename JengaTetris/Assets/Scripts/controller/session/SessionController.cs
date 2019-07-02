@@ -20,7 +20,7 @@ namespace Assets.Scripts.controller.session
             CheckNewPiece();
         }
 
-        private void CheckNewPiece()
+        public void CheckNewPiece()
         {
             if(session.isOver) services.NotifyEndGame(session.isWinner);
             else services.NotifyNextPiece(session.NextPiece());

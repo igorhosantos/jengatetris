@@ -11,30 +11,35 @@ namespace Assets.Scripts.view.board
     public class BoardView:GameComponent
     {
         private HighLightView highLight;
-        private List<PieceView> pieces;
+        private List<PieceView> droppedPieces;
         public PieceView currentPiece { get; private set; }
-
+        private BoardBottom bottom;
+        private float speedDrop = 0.01f;
         void Awake()
         {
-            pieces = new List<PieceView>();
+            bottom = FindAndAdd<BoardBottom>(transform, "Bottom");
+            droppedPieces = new List<PieceView>();
         }
 
+        public void SaveLastPiece(PieceView p)
+        {
+            droppedPieces.Add(p);
+        }
         public PieceView DropNewPiece(Piece piece)
         {
-            PieceView p = InstantiateAndAdd<PieceView>(transform, PieceController.ME.RetrievePiece(piece));
-            pieces.Add(p);
+            PieceView p = InstantiateAndAdd<PieceView>(transform, PieceController.ME.RetrievePiece(piece)).Initiate(piece);
             currentPiece = p;
             return p;
         }
 
         public void MovePieceLeft()
         {
-            currentPiece.transform.DOMoveX(currentPosition.x - 0.4f, 0);
+            currentPiece.transform.DOMoveX(currentPiece.currentPosition.x - 0.1f, 0);
         }
 
         public void MovePieceRight()
         {
-            currentPiece.transform.DOMoveX(currentPosition.x + 0.4f, 0);
+            currentPiece.transform.DOMoveX(currentPosition.x + 0.1f, 0);
         }
         public void MovePieceDown()
         {
@@ -42,15 +47,44 @@ namespace Assets.Scripts.view.board
         }
         public void RotatePieceLeft()
         {
-            currentPiece.transform.DORotate(new Vector3(currentRotation.x,currentRotation.y,currentRotation.z + 90), 0);
+            if(currentPiece.applyRotation)return;
+            LockRotate();
+            currentPiece.transform.DORotate(new Vector3(currentRotation.x,currentRotation.y,currentRotation.z + 90), 0.2f).OnComplete(UnLockRotate);
         }
         public void RotatePieceRight()
         {
-            currentPiece.transform.DORotate(new Vector3(currentRotation.x, currentRotation.y, currentRotation.z-90), 0);
+            if (currentPiece.applyRotation) return;
+            LockRotate();
+            currentPiece.transform.DORotate(new Vector3(currentRotation.x, currentRotation.y, currentRotation.z-90), 0.2f).OnComplete(UnLockRotate);
+        }
+
+        private void LockRotate()
+        {
+            currentPiece.applyRotation = true;
+        }
+
+        private void UnLockRotate()
+        {
+            currentPiece.applyRotation = false;
+        }
+
+        public void PauseGame(bool isPaused)
+        {
+            if(isPaused)
+                droppedPieces.ForEach(x=>x.Sleep());
+            else
+                droppedPieces.ForEach(x => x.WakeUp());
         }
 
 
-        private Vector3 currentPosition => currentPiece.transform.localPosition;
-        private Vector3 currentRotation => currentPiece.transform.rotation.eulerAngles;
+        void Update()
+        {
+            if (currentPiece.pieceDropped || UserGameController.ME.gamePaused) return;
+            currentPiece.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y-speedDrop, currentPosition.z);
+        }
+
+        public Vector3 currentPosition => currentPiece.currentPosition;
+        public Vector3 currentRotation => currentPiece.currentRotation;
+
     }
 }
