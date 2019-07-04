@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.controller.piece;
-using Assets.Scripts.engine.session;
+﻿using Assets.Scripts.engine.session;
 
 namespace Assets.Scripts.controller.session
 {
@@ -11,10 +6,12 @@ namespace Assets.Scripts.controller.session
     {
         private Session session;
         private IGameServices services;
-
-        public void StartSession(IGameServices services)
+        private short clientId;
+        public void StartSession(IGameServices services, short clientId)
         {
             this.services = services;
+            this.clientId = clientId;
+
             session = new Session();
             services.NotifyStartSession();
             CheckNewPiece();
@@ -22,8 +19,8 @@ namespace Assets.Scripts.controller.session
 
         public void CheckNewPiece()
         {
-            if(session.isOver) services.NotifyEndGame(session.isWinner);
-            else services.NotifyNextPiece(session.NextPiece());
+            if(session.isOver) services.NotifyEndGame(clientId,session.isWinner);
+            else services.NotifyNextPiece(clientId,session.NextPiece());
         }
     }
 }

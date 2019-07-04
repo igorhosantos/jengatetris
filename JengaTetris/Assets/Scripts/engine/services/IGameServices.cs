@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using Assets.Scripts.engine.piece;
-using UnityEngine;
 
 public interface IGameServices
 {
     void NotifyStartSession();
-    void NotifyNextPiece(Piece p);
-    void NotifyEndGame(bool isWin);
+    void NotifyNextPiece(short clientId,Piece p);
+    void NotifyEndGame(short clientId,bool isWin);
 }

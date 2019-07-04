@@ -12,29 +12,31 @@ public class Startup : MonoBehaviour
     private List<AsyncOperation> allScenes;
     private bool doneLoadingScenes;
 
+    public GamenetManager gamenetManager;
+
     void Awake()
     {
-        
         btSinglePlayer.onClick.AddListener(EnterSinglePlayer);
         btMultiplayer.onClick.AddListener(EnterMultiPlayer);
+        GamenetController.ME.StartController(gamenetManager);
+
     }
 
     private void EnterSinglePlayer()
     {
-        EnableScene(1);
+        GamenetController.ME.EnableManager(false);
+        EnableScene(2);
     }
 
     private void EnterMultiPlayer()
     {
+        GamenetController.ME.EnableManager(true);
+
         EnableScene(1);
     }
-
-   
-    private void EnableScene(int index)
-    {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
-    }
-
+    
+    private void EnableScene(int index)=>SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
+    
     private void OnFinishedLoadingAllScene()
     {
         EnableScene(0);
