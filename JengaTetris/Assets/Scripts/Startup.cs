@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class Startup : MonoBehaviour
 {
-    public Button btSinglePlayer;
-    public Button btMultiplayer;
+    [SerializeField]private Button btSinglePlayer;
+    [SerializeField] private Button btMultiplayerHost;
+    [SerializeField] private Button btMultiplayerClient;
 
     private List<AsyncOperation> allScenes;
     private bool doneLoadingScenes;
@@ -17,9 +18,9 @@ public class Startup : MonoBehaviour
     void Awake()
     {
         btSinglePlayer.onClick.AddListener(EnterSinglePlayer);
-        btMultiplayer.onClick.AddListener(EnterMultiPlayer);
+        btMultiplayerHost.onClick.AddListener(EnterMultiPlayerHost);
+        btMultiplayerClient.onClick.AddListener(EnterMultiPlayerClient);
         GamenetController.ME.StartController(gamenetManager);
-
     }
 
     private void EnterSinglePlayer()
@@ -28,17 +29,17 @@ public class Startup : MonoBehaviour
         EnableScene(2);
     }
 
-    private void EnterMultiPlayer()
+    private void EnterMultiPlayerHost()
     {
         GamenetController.ME.EnableManager(true);
+        GamenetController.ME.StartHost();
+    }
 
-        EnableScene(1);
-    }
-    
-    private void EnableScene(int index)=>SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
-    
-    private void OnFinishedLoadingAllScene()
+    private void EnterMultiPlayerClient()
     {
-        EnableScene(0);
+        GamenetController.ME.EnableManager(true);
+        GamenetController.ME.StartClient();
     }
+    private void EnableScene(int index)=>SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
+  
 }

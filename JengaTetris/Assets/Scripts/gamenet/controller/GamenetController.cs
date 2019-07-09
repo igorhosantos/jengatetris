@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using UnityEngine.Events;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Networking;
 
 public class GamenetController : Singleton<GamenetController>
@@ -9,14 +7,22 @@ public class GamenetController : Singleton<GamenetController>
     private GamenetManager netManager;
 
     public GamenetEvent ON_SERVER_ADD_PLAYER;
+    public GamenetEvent ON_CLIENT_CONNECTED;
 
     public bool isNetworkActive => netManager.isNetworkActive;
     public bool isEnabled;
+    public bool isServer => netManager.isServerHost;
+
+    private int MAX_CLIENTS_PER_MATCH = 2;
+
+
     public void StartController(GamenetManager netManager)
     {
         ON_SERVER_ADD_PLAYER = new GamenetEvent();
+        ON_CLIENT_CONNECTED = new GamenetEvent();
         this.netManager = netManager;
-        this.netManager.OnAddPlayer = OnServerAddPlayer;
+        this.netManager.OnServerAddClientPlayer = OnServerAddPlayer;
+        this.netManager.OnClientConnectedPlayer = OnClientConnected;
     }
 
     public void EnableManager(bool isEnable)
@@ -26,17 +32,31 @@ public class GamenetController : Singleton<GamenetController>
        
     }
 
-    private void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
+    private void OnServerAddPlayer(NetworkConnection conn, int playerControllerId)
     {
-        ON_SERVER_ADD_PLAYER.Invoke(conn, playerControllerId);
+        Debug.LogWarning("Gamenet Controller OnServerAddPlayer : " + netManager.totalClients);
+//
+//        if (netManager.totalClients == MAX_CLIENTS_PER_MATCH)
+//        {
+//            ON_SERVER_ADD_PLAYER.Invoke(conn, netManager.localClient.connectionId);
+//        }
     }
 
-    public void StartConnection()
+    private void OnClientConnected(NetworkConnection conn, int playerControllerId)
     {
-        if (!isEnabled) return;
-
-        if (isNetworkActive) netManager.StartClient();
-        else netManager.StartHost();
+        Debug.LogWarning("Gamenet Controller OnClientConnected : " + conn.connectionId);
+//        ON_CLIENT_CONNECTED.Invoke(conn, conn.connectionId);
     }
 
+    public void StartHost()
+    {
+//        Debug.LogWarning("Gamenet StartHost");
+        netManager.StartHost();
+    }
+
+    public void StartClient()
+    {
+//        Debug.LogWarning("Gamenet StartClient");
+        netManager.StartClient();
+    }
 }

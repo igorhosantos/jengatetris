@@ -6,8 +6,8 @@ namespace Assets.Scripts.controller.session
     {
         private Session session;
         private IGameServices services;
-        private short clientId;
-        public void StartSession(IGameServices services, short clientId)
+        private string clientId;
+        public void StartSession(IGameServices services, string clientId)
         {
             this.services = services;
             this.clientId = clientId;

@@ -7,9 +7,9 @@ public class UserGameController : Singleton<UserGameController>
     private IControllerServices services;
     private bool controllerEnables;
     public bool gamePaused { get; private set; }
-    private short clientId;
+    private string clientId;
 
-    public void StartPlayerController(IPlayerControllerServices playerServices, short clientId)
+    public void StartPlayerController(IPlayerControllerServices playerServices, string clientId)
     {
         this.clientId = clientId;
         this.playerServices = playerServices;

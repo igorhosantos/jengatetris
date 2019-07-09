@@ -34,5 +34,15 @@ namespace Assets.Scripts.controller.piece
         {
             return pool[p];
         }
+
+        public Piece RetrievePieceById(int id)
+        {
+            foreach (var keyValuePair in pool)
+            {
+                if (keyValuePair.Key.id == id) return keyValuePair.Key;
+            }
+
+            return null;
+        }
     }
 }

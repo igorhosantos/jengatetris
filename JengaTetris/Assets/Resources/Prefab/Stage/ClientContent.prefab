@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4820492576244620}
   - component: {fileID: 212719597200897464}
   - component: {fileID: 61887894638380506}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,8 @@ GameObject:
   - component: {fileID: 4509340511666654}
   - component: {fileID: 114718673876019006}
   - component: {fileID: 114913935077503606}
-  m_Layer: 0
+  - component: {fileID: 114143306272334198}
+  m_Layer: 8
   m_Name: ClientContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +54,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4693748416342928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PieceContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +71,7 @@ GameObject:
   - component: {fileID: 4893309355272160}
   - component: {fileID: 212023315514061994}
   - component: {fileID: 61596907374416782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +88,8 @@ GameObject:
   - component: {fileID: 4420135414611318}
   - component: {fileID: 212856714982236700}
   - component: {fileID: 61361747092727492}
-  m_Layer: 0
+  - component: {fileID: 114773277575908178}
+  m_Layer: 8
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,6 +240,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3.42, y: 0.86}
   m_EdgeRadius: 0
+--- !u!114 &114143306272334198
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1260520711707456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 1
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_VelocityThreshold: 0.0001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
 --- !u!114 &114718673876019006
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,6 +293,17 @@ MonoBehaviour:
     i15: 170
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114773277575908178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1673171177707428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad51fc95600dd474195bfde6a821c598, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114913935077503606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -282,6 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pieceContent: {fileID: 4693748416342928}
+  bottom: {fileID: 114773277575908178}
 --- !u!212 &212023315514061994
 SpriteRenderer:
   m_ObjectHideFlags: 1

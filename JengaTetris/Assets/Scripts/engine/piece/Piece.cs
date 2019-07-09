@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.engine.piece
 {
-    public class Piece:MonoBehaviour
+    public class Piece:NetworkBehaviour
     {
         [SerializeField] public int id;
         [SerializeField] private float dropChance;

@@ -3,6 +3,7 @@ using Assets.Scripts.engine.piece;
 using Assets.Scripts.view.common;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.view.piece
 {
