@@ -45,20 +45,22 @@ namespace Assets.Scripts.view.board
             {
                 SessionController.ME.SetFail();
                 OnPieceFailed.Invoke();
-                p.RemovePhysics();
                 droppedPieces.Remove(p);
             }
+            else
+            {
+                SessionController.ME.SetFall();
+                OnPieceFall.Invoke();
+            }
+           
+            p.RemovePhysics();
+            Destroy(p.gameObject);
 
-            SessionController.ME.SetFall();
-            OnPieceFall.Invoke();
-
-            Debug.Log("ON PIECE COLLISION ON WALLS: " + p);
         }
 
         public void OnMovementComplete(PieceView p)
         {
             droppedPieces.Add(p);
-            Debug.LogWarning("OnMovementComplete");
             SessionController.ME.SetStacked();
             SessionController.ME.CheckNewPiece();
             OnPieceSucceed.Invoke();
@@ -87,26 +89,18 @@ namespace Assets.Scripts.view.board
         public void RotatePieceLeft()
         {
             if(currentPiece.applyRotation)return;
-            LockRotate();
-            currentPiece.transform.DORotate(new Vector3(currentRotation.x,currentRotation.y,currentRotation.z + 90), 0.2f).OnComplete(UnLockRotate);
+            LockRotate(true);
+            currentPiece.transform.DORotate(new Vector3(currentRotation.x,currentRotation.y,currentRotation.z + 90), 0.2f).OnComplete(() => LockRotate(false));
         }
         public void RotatePieceRight()
         {
             if (currentPiece.applyRotation) return;
-            LockRotate();
-            currentPiece.transform.DORotate(new Vector3(currentRotation.x, currentRotation.y, currentRotation.z-90), 0.2f).OnComplete(UnLockRotate);
+            LockRotate(true);
+            currentPiece.transform.DORotate(new Vector3(currentRotation.x, currentRotation.y, currentRotation.z-90), 0.2f).OnComplete(()=>LockRotate(false));
         }
 
-        private void LockRotate()
-        {
-            currentPiece.applyRotation = true;
-        }
-
-        private void UnLockRotate()
-        {
-            currentPiece.applyRotation = false;
-        }
-
+        private void LockRotate(bool onLock)=> currentPiece.applyRotation = onLock;
+        
         public void PauseGame(bool isPaused)
         {
             if(isPaused)
@@ -115,10 +109,11 @@ namespace Assets.Scripts.view.board
                 droppedPieces.ForEach(x => x.WakeUp());
         }
 
-
+        public void EndGame()=> droppedPieces.ForEach(x => x.RemovePhysics());
+        
         void Update()
         {
-            if (currentPiece.pieceDropped || UserGameController.ME.gamePaused) return;
+            if (SessionController.ME.gameOver || currentPiece==null || currentPiece.pieceDropped || UserGameController.ME.gamePaused) return;
             currentPiece.transform.localPosition = new Vector3(currentPosition.x, currentPosition.y-speedDrop, currentPosition.z);
         }
 

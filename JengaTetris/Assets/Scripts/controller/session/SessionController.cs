@@ -20,19 +20,33 @@ namespace Assets.Scripts.controller.session
             CheckNewPiece();
         }
 
+        public int falls => session.falls;
+        public int stackeds => session.stackeds;
+        public bool gameOver => session!=null && session.isOver;
+
         public void CheckNewPiece()
         {
             if(session.isOver) services.NotifyEndGame(session.isWinner);
             else{ services.NotifyNextPiece(session.NextPiece());}
         }
 
-        public int falls => session.falls;
-        public int stackeds => session.stackeds;
+        public void SetFail()
+        {
+            session.SetFail();
+            if (session.isOver) services.NotifyEndGame(session.isWinner);
+        }
 
+        public void SetStacked()
+        {
+            session.SetStacked();
+            if (session.isOver) services.NotifyEndGame(session.isWinner);
+        }
 
-        public void SetFail() => session.SetFail();
-        public void SetStacked() => session.SetStacked();
-        public void SetFall() => session.SetFall();
+        public void SetFall()
+        {
+            session.SetFall();
+            if (session.isOver) services.NotifyEndGame(session.isWinner);
+        } 
 
     }
 }

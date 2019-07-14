@@ -1,26 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Startup : MonoBehaviour
 {
-    [SerializeField]private Button btSinglePlayer;
-  
     private List<AsyncOperation> allScenes;
-    private bool doneLoadingScenes;
-
+    public const string SCENE_MENU = "Menu";
+    public const string SCENE_GAME = "Game";
+  
     void Awake()
     {
-        btSinglePlayer.onClick.AddListener(EnterSinglePlayer);
+        DontDestroyOnLoad(this);
+        SceneManager.LoadScene(SCENE_MENU,LoadSceneMode.Single);
     }
 
-    private void EnterSinglePlayer()
-    {
-        EnableScene(1);
-    }
-
-    private void EnableScene(int index)=>SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
-  
 }

@@ -7,21 +7,20 @@ namespace Assets.Scripts.engine.session
 {
     public class Session
     {
-        private List<Piece> pieceTypes;
-        public bool isOver => false;
-        public bool isWinner => false;
-        private static Random random;
-        
         public const int MAX_TO_WIN = 10;
         public const int MAX_TO_LOSE = 5;
 
+        private List<Piece> pieceTypes;
+        private static Random random;
+
+        public bool isOver { get; private set; }
+        public bool isWinner { get; private set; }
         public int falls { get; private set; }
         public int stackeds { get; private set; }
 
         public Session()
         {
-            falls = 0;
-            stackeds = 0;
+            stackeds = falls = 0;
             PieceController.ME.StartPool();
             pieceTypes = PieceController.ME.GetAllPieces();
             random = new Random();
@@ -37,19 +36,24 @@ namespace Assets.Scripts.engine.session
         {
             if (stackeds > 0) stackeds--;
             falls++;
+            CheckLose();
+        }
+
+        private void CheckLose()
+        {
+            if (falls >= MAX_TO_LOSE) isOver = true;
         }
 
         public void SetFall()
         {
-            if (falls > MAX_TO_LOSE) throw new Exception();
             falls++;
+            CheckLose();
         }
 
         public void SetStacked()
         {
-            if (stackeds > MAX_TO_WIN) throw new Exception();
             stackeds++;
+            if (stackeds >= MAX_TO_WIN) isWinner = isOver = true;
         }
-
     }
 }

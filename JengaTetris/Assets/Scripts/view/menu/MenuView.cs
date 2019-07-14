@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts.view.common;
+﻿using Assets.Scripts.view.common;
 
 public class MenuView : GameComponent
 {
