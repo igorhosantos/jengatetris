@@ -41,6 +41,13 @@ namespace Assets.Scripts.view.common
             return tp;
         }
 
+        protected T LoadAndGet<T>(Component parent, string path) where T : Component
+        {
+            GameObject gb = Instantiate(Resources.Load<GameObject>("Prefab/" + path), parent.transform);
+            T tp = gb.GetComponent<T>();
+            return tp;
+        }
+
         protected T FindAndAdd<T>(Component parent, string name) where T : Component
         {
             return parent.transform.Find(name).gameObject?.AddComponent<T>();
@@ -54,6 +61,16 @@ namespace Assets.Scripts.view.common
         protected T FindAndGet<T>(Component parent, string name) where T : Component
         {
             return parent.transform.Find(name)?.GetComponent<T>();
+        }
+
+        protected T[] FindAndGetAll<T>(Component parent) where T : Component
+        {
+            return parent?.GetComponents<T>();
+        }
+
+        protected T[] FindAndGetAll<T>() where T : Component
+        {
+            return GameObject.FindObjectsOfType<T>();
         }
 
         protected T FindAndGet<T>(GameObject me) where T : Component

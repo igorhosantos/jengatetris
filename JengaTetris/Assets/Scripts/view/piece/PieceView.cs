@@ -4,6 +4,7 @@ using Assets.Scripts.view.common;
 using Assets.Scripts.view.board;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Networking;
 
 namespace Assets.Scripts.view.piece
 {

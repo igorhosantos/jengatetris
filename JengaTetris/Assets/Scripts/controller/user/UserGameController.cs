@@ -1,14 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.Scripts.engine.services;
+﻿using Assets.Scripts.engine.services;
 using UnityEngine;
 
 public class UserGameController : Singleton<UserGameController>
 {
+    private IPlayerControllerServices playerServices;
     private IControllerServices services;
     private bool controllerEnables;
     public bool gamePaused { get; private set; }
-    public void StartController(IControllerServices services)
+    private string clientId;
+
+    public void StartPlayerController(IPlayerControllerServices playerServices, string clientId)
+    {
+        this.clientId = clientId;
+        this.playerServices = playerServices;
+    }
+
+    public void StartGlobalController(IControllerServices services)
     {
         this.services = services;
     }
@@ -27,18 +34,19 @@ public class UserGameController : Singleton<UserGameController>
     {
         if (!controllerEnables) return;
 
+        //global
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gamePaused = !gamePaused;
             services.NotifyPause(gamePaused);
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) services.NotifyMoveLeft();
-        if (Input.GetKeyDown(KeyCode.RightArrow)) services.NotifyMoveRight();
-        if (Input.GetKeyDown(KeyCode.S)) services.NotifyRotateLeft();
-        if (Input.GetKeyDown(KeyCode.D)) services.NotifyRotateRight();
 
-
+        //per player
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) playerServices.NotifyMoveLeft(clientId);
+        if (Input.GetKeyDown(KeyCode.RightArrow)) playerServices.NotifyMoveRight(clientId);
+        if (Input.GetKeyDown(KeyCode.S)) playerServices.NotifyRotateLeft(clientId);
+        if (Input.GetKeyDown(KeyCode.D)) playerServices.NotifyRotateRight(clientId);
         //press for down
-        if (Input.GetKey(KeyCode.DownArrow)) services.NotifyMoveDown();
+        if (Input.GetKey(KeyCode.DownArrow)) playerServices.NotifyMoveDown(clientId);
     }
 }

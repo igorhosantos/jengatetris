@@ -6,37 +6,40 @@ using UnityEngine.UI;
 
 public class Startup : MonoBehaviour
 {
-    public Button btSinglePlayer;
-    public Button btMultiplayer;
+    [SerializeField]private Button btSinglePlayer;
+    [SerializeField] private Button btMultiplayerHost;
+    [SerializeField] private Button btMultiplayerClient;
 
     private List<AsyncOperation> allScenes;
     private bool doneLoadingScenes;
 
+    public GamenetManager gamenetManager;
+
     void Awake()
     {
-        
         btSinglePlayer.onClick.AddListener(EnterSinglePlayer);
-        btMultiplayer.onClick.AddListener(EnterMultiPlayer);
+        btMultiplayerHost.onClick.AddListener(EnterMultiPlayerHost);
+        btMultiplayerClient.onClick.AddListener(EnterMultiPlayerClient);
+        GamenetController.ME.StartController(gamenetManager);
     }
 
     private void EnterSinglePlayer()
     {
-        EnableScene(1);
+        GamenetController.ME.EnableManager(false);
+        EnableScene(2);
     }
 
-    private void EnterMultiPlayer()
+    private void EnterMultiPlayerHost()
     {
-        EnableScene(1);
+        GamenetController.ME.EnableManager(true);
+        GamenetController.ME.StartHost();
     }
 
-   
-    private void EnableScene(int index)
+    private void EnterMultiPlayerClient()
     {
-        AsyncOperation scene = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+        GamenetController.ME.EnableManager(true);
+        GamenetController.ME.StartClient();
     }
-
-    private void OnFinishedLoadingAllScene()
-    {
-        EnableScene(0);
-    }
+    private void EnableScene(int index)=>SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
+  
 }
