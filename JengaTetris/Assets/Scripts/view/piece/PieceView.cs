@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Assets.Scripts.engine.piece;
 using Assets.Scripts.view.common;
+using Assets.Scripts.view.board;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,8 +32,8 @@ namespace Assets.Scripts.view.piece
             return this;
         }
 
-        private void RemovePhysics() => piecePhysics.bodyType = RigidbodyType2D.Kinematic;
-        private void AddPhysics() => piecePhysics.bodyType = RigidbodyType2D.Dynamic;
+        public void RemovePhysics() => piecePhysics.bodyType = RigidbodyType2D.Kinematic;
+        public void AddPhysics() => piecePhysics.bodyType = RigidbodyType2D.Dynamic;
 
         void OnTriggerEnter2D(Collider2D other)
         {

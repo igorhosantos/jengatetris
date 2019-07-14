@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Assets.Scripts.controller.piece;
+using Assets.Scripts.controller.session;
 using Assets.Scripts.engine.piece;
 using Assets.Scripts.view.common;
 using Assets.Scripts.view.piece;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.view.board
 {
@@ -13,18 +15,54 @@ namespace Assets.Scripts.view.board
         private HighLightView highLight;
         private List<PieceView> droppedPieces;
         public PieceView currentPiece { get; private set; }
+
+        //board detection
         private BoardBottom bottom;
+        public BoardSide leftSide { get; private set; }
+        public BoardSide rightSide { get; private set; }
+
+        //board actions
+        public UnityAction OnPieceFall;
+        public UnityAction OnPieceFailed;
+        public UnityAction OnPieceSucceed;
+       
         private float speedDrop = 0.01f;
+
         void Awake()
         {
             bottom = FindAndAdd<BoardBottom>(transform, "Bottom");
+            leftSide = FindAndAdd<BoardSide>(transform, "Left");
+            rightSide = FindAndAdd<BoardSide>(transform, "Right");
+
+            leftSide.OnPieceCollision = rightSide.OnPieceCollision = OnPieceCollision;
+
             droppedPieces = new List<PieceView>();
         }
 
-        public void SaveLastPiece(PieceView p)
+        private void OnPieceCollision(PieceView p)
+        {
+            if (droppedPieces.Contains(p))
+            {
+                SessionController.ME.SetFail();
+                OnPieceFailed.Invoke();
+                p.RemovePhysics();
+                droppedPieces.Remove(p);
+            }
+
+            SessionController.ME.SetFall();
+            OnPieceFall.Invoke();
+
+            Debug.Log("ON PIECE COLLISION ON WALLS: " + p);
+        }
+
+        public void OnMovementComplete(PieceView p)
         {
             droppedPieces.Add(p);
+            Debug.LogWarning("OnMovementComplete");
+            SessionController.ME.CheckNewPiece();
+            OnPieceSucceed.Invoke();
         }
+        
         public PieceView DropNewPiece(Piece piece)
         {
             PieceView p = InstantiateAndAdd<PieceView>(transform, PieceController.ME.RetrievePiece(piece)).Initiate(piece);

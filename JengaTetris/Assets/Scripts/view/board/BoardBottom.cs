@@ -2,7 +2,10 @@
 using UnityEngine;
 using UnityEditor;
 
-public class BoardBottom : GameComponent
+namespace Assets.Scripts.view.board
 {
-   
+    public class BoardBottom : GameComponent
+    {
+
+    }
 }

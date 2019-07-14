@@ -23,7 +23,16 @@ namespace Assets.Scripts.controller.session
         public void CheckNewPiece()
         {
             if(session.isOver) services.NotifyEndGame(session.isWinner);
-            else services.NotifyNextPiece(session.NextPiece());
+            else{ services.NotifyNextPiece(session.NextPiece());}
         }
+
+        public int falls => session.falls;
+        public int stackeds => session.stackeds;
+
+
+        public void SetFail() => session.SetFail();
+        public void SetStacked() => session.SetStacked();
+        public void SetFall() => session.SetFall();
+
     }
 }

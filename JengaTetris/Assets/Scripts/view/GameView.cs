@@ -11,30 +11,49 @@ using UnityEngine.Events;
 
 public class GameView : GameComponent, IGameServices, IControllerServices
 {
+    [SerializeField]private Canvas menuCanvas;
+    [SerializeField] private MenuView menu;
+    [SerializeField] private HudView hud;
     private BoardView board;
-    private MenuView menu;
+    
     public override void Awake()
     {
         //start components
         board = LoadAndAdd<BoardView>(transform, "Stage/Board");
-        menu = FindAndAdd<MenuView>("CanvasMenu");
+        board.OnPieceFall = OnPieceFall;
+        board.OnPieceFailed = OnPieceFailed;
+        board.OnPieceSucceed = OnPieceSucceed;
 
+        CreateSession();
+    }
+
+    private void CreateSession()
+    {
         //start engine and controllers
         SessionController.ME.StartSession(this);
         UserGameController.ME.StartController(this);
+
+        OnPieceFall();
+        OnPieceSucceed();
     }
 
     private void EnableMenu(bool gamePaused)=> menu.EnableMenu(gamePaused);
+
+    #region [BOARD UPDATES]
+
+    private void OnPieceFall()=> hud.UpdateFalls(SessionController.ME.falls);
+    private void OnPieceSucceed() => hud.UpdateStacked(SessionController.ME.stackeds);
+    private void OnPieceFailed()
+    {
+        hud.UpdateStacked(SessionController.ME.stackeds);
+        hud.UpdateFalls(SessionController.ME.falls);
+    }
     
+    #endregion
+
 
     #region [PIECE EVENTS]
-    private void OnMovementComplete(PieceView piece)
-    {
-        board.SaveLastPiece(piece);
-        Debug.LogWarning("OnMovementComplete");
-        SessionController.ME.CheckNewPiece();
-    }
-
+    private void OnMovementComplete(PieceView piece)=> board.OnMovementComplete(piece);
     #endregion[]
 
     #region [ENGINE FEEDS]
