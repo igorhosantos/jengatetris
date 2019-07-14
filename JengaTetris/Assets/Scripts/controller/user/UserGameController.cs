@@ -4,21 +4,14 @@ using UnityEngine;
 public class UserGameController : Singleton<UserGameController>
 {
     private IPlayerControllerServices playerServices;
-    private IControllerServices services;
     private bool controllerEnables;
     public bool gamePaused { get; private set; }
-    private string clientId;
-
-    public void StartPlayerController(IPlayerControllerServices playerServices, string clientId)
+  
+    public void StartController(IPlayerControllerServices playerServices)
     {
-        this.clientId = clientId;
         this.playerServices = playerServices;
     }
 
-    public void StartGlobalController(IControllerServices services)
-    {
-        this.services = services;
-    }
 
     public void EnableController()
     {
@@ -38,15 +31,15 @@ public class UserGameController : Singleton<UserGameController>
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gamePaused = !gamePaused;
-            services.NotifyPause(gamePaused);
+            playerServices.NotifyPause(gamePaused);
         }
 
         //per player
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) playerServices.NotifyMoveLeft(clientId);
-        if (Input.GetKeyDown(KeyCode.RightArrow)) playerServices.NotifyMoveRight(clientId);
-        if (Input.GetKeyDown(KeyCode.S)) playerServices.NotifyRotateLeft(clientId);
-        if (Input.GetKeyDown(KeyCode.D)) playerServices.NotifyRotateRight(clientId);
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) playerServices.NotifyMoveLeft();
+        if (Input.GetKeyDown(KeyCode.RightArrow)) playerServices.NotifyMoveRight();
+        if (Input.GetKeyDown(KeyCode.S)) playerServices.NotifyRotateLeft();
+        if (Input.GetKeyDown(KeyCode.D)) playerServices.NotifyRotateRight();
         //press for down
-        if (Input.GetKey(KeyCode.DownArrow)) playerServices.NotifyMoveDown(clientId);
+        if (Input.GetKey(KeyCode.DownArrow)) playerServices.NotifyMoveDown();
     }
 }

@@ -59,6 +59,7 @@ namespace Assets.Scripts.view.board
         {
             droppedPieces.Add(p);
             Debug.LogWarning("OnMovementComplete");
+            SessionController.ME.SetStacked();
             SessionController.ME.CheckNewPiece();
             OnPieceSucceed.Invoke();
         }

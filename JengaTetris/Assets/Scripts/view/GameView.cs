@@ -9,7 +9,7 @@ using Assets.Scripts.view.piece;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameView : GameComponent, IGameServices, IControllerServices
+public class GameView : GameComponent, IGameServices,IPlayerControllerServices
 {
     [SerializeField]private Canvas menuCanvas;
     [SerializeField] private MenuView menu;
