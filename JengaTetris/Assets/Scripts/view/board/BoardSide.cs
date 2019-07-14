@@ -15,8 +15,9 @@ namespace Assets.Scripts.view.board
             if (other.gameObject.GetComponent<PieceView>())
             {
                 PieceView pv = other.gameObject.GetComponent<PieceView>();
-                if (pv.pieceDropped)
+                if (pv.pieceDropped && !pv.pieceFailed)
                 {
+                    pv.SetFailed();
                     OnPieceCollision.Invoke(other.gameObject.GetComponent<PieceView>());
                 }
                 

@@ -14,6 +14,7 @@ namespace Assets.Scripts.view.piece
         private Rigidbody2D piecePhysics;
         private PolygonCollider2D collider;
         public UnityAction<PieceView> OnMovementComplete;
+        public bool pieceFailed { get; private set; }
         public bool pieceDropped { get; private set; }
         public bool applyRotation { get; set; }
 
@@ -59,6 +60,10 @@ namespace Assets.Scripts.view.piece
             piecePhysics.WakeUp();
         }
 
+        public void SetFailed()
+        {
+            pieceFailed = true;
+        }
 
         public Vector3 currentPosition => transform.localPosition;
         public Vector3 currentRotation => transform.rotation.eulerAngles;
